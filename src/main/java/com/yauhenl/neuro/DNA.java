@@ -1,9 +1,13 @@
 package com.yauhenl.neuro;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static processing.core.PApplet.arrayCopy;
-import static processing.core.PApplet.println;
 
 class DNA {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DNA.class);
+
     //The genes include: Neural Network Weights, Mass
     float[] genes;
 
@@ -26,7 +30,7 @@ class DNA {
     }
 
     //Construction, with defined genes
-    DNA(NeuralEvolution neuralEvolution, float[] f) {
+    private DNA(NeuralEvolution neuralEvolution, float[] f) {
         this.neuralEvolution = neuralEvolution;
         genes = f;
     }
@@ -43,19 +47,19 @@ class DNA {
 
         for (int i = 0; i < 32; i++) {
             if (neuralEvolution.random(1) < mutationRate) {
-                println("Mutation!");
+                LOGGER.info("Mutation!");
                 genes[i] = neuralEvolution.random(0, 1);
             }
         }
         for (int i = 32; i < 33; i++) {
             if (neuralEvolution.random(1) < mutationRate) {
-                println("Mutation!");
+                LOGGER.info("Mutation!");
                 genes[i] = neuralEvolution.random(50, 150);
             }
         }
         for (int i = 33; i < 40; i++) {
             if (neuralEvolution.random(1) < mutationRate) {
-                println("Mutation!");
+                LOGGER.info("Mutation!");
                 genes[i] = neuralEvolution.random(10, 50);
             }
         }

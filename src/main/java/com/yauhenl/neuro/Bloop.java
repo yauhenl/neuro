@@ -1,5 +1,7 @@
 package com.yauhenl.neuro;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 
 //The Bloop class
 class Bloop {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Bloop.class);
 
     private NeuralEvolution neuralEvolution;
     int id;  //Identification number of Bloops
@@ -48,7 +51,7 @@ class Bloop {
     }
 
     //Constructor with specific DNA and Location
-    Bloop(NeuralEvolution neuralEvolution, DNA dna, PVector loc, int id) {
+    private Bloop(NeuralEvolution neuralEvolution, DNA dna, PVector loc, int id) {
         this.neuralEvolution = neuralEvolution;
 
         this.id = id;
@@ -180,7 +183,7 @@ class Bloop {
 
     //Reproduction:
     Bloop reproduce(int id) {
-        PApplet.println("Reproduction! ");
+        LOGGER.info("Reproduction!");
         DNA childDNA = dna.copy();
         childDNA.mutate(0.02f); //2% mutation rate
         return new Bloop(neuralEvolution, childDNA, location, id);
@@ -188,17 +191,16 @@ class Bloop {
 
     //Print Bloops information:
     private void printInformation() {
-        PApplet.println("Bloops number: " + id);
-        PApplet.println("Bloops mass: " + mass);
-        PApplet.print("DNA: ");
+        LOGGER.info("Bloops number: {}", id);
+        LOGGER.info("Bloops mass: {}", mass);
+        StringBuilder dnaStr = new StringBuilder("DNA: ");
         for (int i = 0; i < dna.genes.length; ++i) {
-            PApplet.print(dna.genes[i]);
-            PApplet.print(" ");
+            dnaStr.append(dna.genes[i]).append(" ");
         }
-        PApplet.println("    Dna-End");
-        PApplet.println("Location: " + location.x + "  " + location.y);
-        PApplet.println("Health: " + health);
-        PApplet.println("\n");
+        LOGGER.info(dnaStr.toString());
+        LOGGER.info("Location: {} {}", location.x , location.y);
+        LOGGER.info("Health: {}", health);
+        LOGGER.info("\n");
     }
 
     //Check if a Bloops is Dead:

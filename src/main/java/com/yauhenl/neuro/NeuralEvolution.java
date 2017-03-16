@@ -14,16 +14,10 @@ public class NeuralEvolution extends PApplet {
 
     @Override
     public void draw() {
-        background(33, 33, 33);
+        background(33);
 
         //Run my world
         myworld.run();
-    }
-
-    //Mouse clicked
-    @Override
-    public void mouseClicked() {
-        myworld.addBloops();
     }
 
     @Override
@@ -32,11 +26,6 @@ public class NeuralEvolution extends PApplet {
     }
 
     public static void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"com.yauhenl.neuro.NeuralEvolution"};
-        if (passedArgs != null) {
-            PApplet.main(concat(appletArgs, passedArgs));
-        } else {
-            PApplet.main(appletArgs);
-        }
+        PApplet.main(NeuralEvolution.class);
     }
 }
