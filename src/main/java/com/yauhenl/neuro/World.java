@@ -21,10 +21,10 @@ class World {
         bloops = new ArrayList<>();
         foods = new ArrayList<>();
 
-        for (int i = 0; i < bloopsNum; ++i) {
+        for (int i = 0; i < bloopsNum; i++) {
             bloops.add(new Bloop(neuralEvolution, bloopsCount++));
         }
-        for (int i = 0; i < foodsNum; ++i) {
+        for (int i = 0; i < foodsNum; i++) {
             foods.add(new Food(neuralEvolution));
         }
     }
@@ -32,7 +32,7 @@ class World {
     void run() {
 
         //Update bloops:
-        for (int i = 0; i < bloops.size(); ++i) {
+        for (int i = 0; i < bloops.size(); i++) {
 
             bloops.get(i).update(foods);   //Update Bloop position
             bloops.get(i).eat(foods);  //Bloop eating

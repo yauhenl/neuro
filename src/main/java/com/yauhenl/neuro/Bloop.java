@@ -38,7 +38,7 @@ class Bloop {
         dna = new DNA(neuralEvolution);  //create random DNA
         brain = new Brain(dna);  //create the brain
 
-        mass = dna.genes[32];
+        mass = dna.massGene;
         health = 1000;
 
         location = new PVector(neuralEvolution.random(neuralEvolution.width), neuralEvolution.random(neuralEvolution.height));
@@ -58,7 +58,7 @@ class Bloop {
         this.dna = dna;
         brain = new Brain(dna);
 
-        mass = dna.genes[32];
+        mass = dna.massGene;
         health = 1000;
 
         location = new PVector(loc.x + 10, loc.y + 10);
@@ -198,7 +198,7 @@ class Bloop {
         LOGGER.info("Bloops number: {}", id);
         LOGGER.info("Bloops mass: {}", mass);
         StringBuilder dnaStr = new StringBuilder("DNA: ");
-        for (float gene : dna.genes) {
+        for (float gene : dna.weightGenes) {
             dnaStr.append(gene).append(" ");
         }
         String dnaS = dnaStr.toString();

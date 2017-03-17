@@ -3,7 +3,8 @@ package com.yauhenl.neuro;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static processing.core.PApplet.arrayCopy;
+import java.util.ArrayList;
+import java.util.List;
 
 class DNA {
     private static final Logger LOGGER = LoggerFactory.getLogger(DNA.class);
@@ -11,7 +12,8 @@ class DNA {
     private static final Float MUTATION_RATE = 0.02f;
 
     //The genes include: Neural Network Weights, Mass
-    float[] genes;
+    List<Float> weightGenes = new ArrayList<>();
+    Float massGene;
 
     private NeuralEvolution neuralEvolution;
 
@@ -19,51 +21,38 @@ class DNA {
     DNA(NeuralEvolution neuralEvolution) {
         this.neuralEvolution = neuralEvolution;
 
-        genes = new float[40];
         for (int i = 0; i < 32; ++i) {  //Weights genes
-            genes[i] = neuralEvolution.random(-1, 1);
+            weightGenes.add(i, neuralEvolution.random(-1, 1));
         }
-        for (int i = 32; i < 33; ++i) {  //Mass Gene
-            genes[i] = neuralEvolution.random(10, 70);
-        }
-        for (int i = 33; i < 40; ++i) {  //Others Genes - not used
-            genes[i] = neuralEvolution.random(0, 50);
-        }
+        massGene = neuralEvolution.random(10, 70);
     }
 
     //Construction, with defined genes
-    private DNA(NeuralEvolution neuralEvolution, float[] f) {
+    private DNA(NeuralEvolution neuralEvolution, List<Float> weightGenes, Float massGene) {
         this.neuralEvolution = neuralEvolution;
-        genes = f;
+        this.weightGenes = weightGenes;
+        this.massGene = massGene;
     }
 
     //Return the exact copy of the dna
     DNA copy() {
-        float[] newgenes = new float[genes.length];
-        arrayCopy(genes, newgenes);
-        return new DNA(neuralEvolution, newgenes);
+        Float newMassGene = massGene;
+        List<Float> newWeightGenes = new ArrayList<>(weightGenes);
+        return new DNA(neuralEvolution, newWeightGenes, newMassGene);
     }
 
     //Mutate the genes
     void mutate() {
-
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < weightGenes.size(); i++) {
             if (neuralEvolution.random(1) < MUTATION_RATE) {
                 LOGGER.info(MUTATION);
-                genes[i] = neuralEvolution.random(0, 1);
+                weightGenes.set(i, neuralEvolution.random(0, 1));
+                massGene = neuralEvolution.random(10, 70);
             }
         }
-        for (int i = 32; i < 33; i++) {
-            if (neuralEvolution.random(1) < MUTATION_RATE) {
-                LOGGER.info(MUTATION);
-                genes[i] = neuralEvolution.random(50, 150);
-            }
-        }
-        for (int i = 33; i < 40; i++) {
-            if (neuralEvolution.random(1) < MUTATION_RATE) {
-                LOGGER.info(MUTATION);
-                genes[i] = neuralEvolution.random(10, 50);
-            }
+        if (neuralEvolution.random(1) < MUTATION_RATE) {
+            LOGGER.info(MUTATION);
+            massGene = neuralEvolution.random(10, 70);
         }
     }
 }

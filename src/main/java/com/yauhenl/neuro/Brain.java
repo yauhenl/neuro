@@ -16,10 +16,10 @@ class Brain {
             for (int j = 0; j < perceptronNum; ++j) {
 
                 float[] w = new float[4];
-                w[0] = dna.genes[16 * i + 4 * j];
-                w[1] = dna.genes[16 * i + 4 * j + 1];
-                w[2] = dna.genes[16 * i + 4 * j + 2];
-                w[3] = dna.genes[16 * i + 4 * j + 3];
+                w[0] = dna.weightGenes.get(16 * i + 4 * j);
+                w[1] = dna.weightGenes.get(16 * i + 4 * j + 1);
+                w[2] = dna.weightGenes.get(16 * i + 4 * j + 2);
+                w[3] = dna.weightGenes.get(16 * i + 4 * j + 3);
 
                 layers[i][j] = new Perceptron(perceptronNum, w);
             }
