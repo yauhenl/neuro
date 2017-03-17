@@ -7,6 +7,8 @@ import static processing.core.PApplet.arrayCopy;
 
 class DNA {
     private static final Logger LOGGER = LoggerFactory.getLogger(DNA.class);
+    private static final String MUTATION = "Mutation!";
+    private static final Float MUTATION_RATE = 0.02f;
 
     //The genes include: Neural Network Weights, Mass
     float[] genes;
@@ -43,23 +45,23 @@ class DNA {
     }
 
     //Mutate the genes
-    void mutate(float mutationRate) {
+    void mutate() {
 
         for (int i = 0; i < 32; i++) {
-            if (neuralEvolution.random(1) < mutationRate) {
-                LOGGER.info("Mutation!");
+            if (neuralEvolution.random(1) < MUTATION_RATE) {
+                LOGGER.info(MUTATION);
                 genes[i] = neuralEvolution.random(0, 1);
             }
         }
         for (int i = 32; i < 33; i++) {
-            if (neuralEvolution.random(1) < mutationRate) {
-                LOGGER.info("Mutation!");
+            if (neuralEvolution.random(1) < MUTATION_RATE) {
+                LOGGER.info(MUTATION);
                 genes[i] = neuralEvolution.random(50, 150);
             }
         }
         for (int i = 33; i < 40; i++) {
-            if (neuralEvolution.random(1) < mutationRate) {
-                LOGGER.info("Mutation!");
+            if (neuralEvolution.random(1) < MUTATION_RATE) {
+                LOGGER.info(MUTATION);
                 genes[i] = neuralEvolution.random(10, 50);
             }
         }

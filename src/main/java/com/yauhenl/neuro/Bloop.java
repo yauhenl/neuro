@@ -73,20 +73,11 @@ class Bloop {
     //Update Bloops location, with Neural Network
     void update(ArrayList<Food> foods) {
 
-
         //If there is some foods:
         if (!foods.isEmpty()) {
 
             //Find the closest foods:
-            Food closestFood = foods.get(0);
-            float distMin = PVector.dist(closestFood.location, location);
-            for (int i = 1; i < foods.size(); ++i) {
-                float dist = PVector.dist(foods.get(i).location, location);
-                if (dist < distMin) {
-                    closestFood = foods.get(i);
-                    distMin = dist;
-                }
-            }
+            Food closestFood = getClosestFood(foods);
 
             neuralEvolution.stroke(255, 255, 255, 100);
             neuralEvolution.line(closestFood.location.x, closestFood.location.y, location.x, location.y);
@@ -142,6 +133,19 @@ class Bloop {
         health -= 1;
     }
 
+    private Food getClosestFood(ArrayList<Food> foods) {
+        Food closestFood = foods.get(0);
+        float distMin = PVector.dist(closestFood.location, location);
+        for (int i = 1; i < foods.size(); ++i) {
+            float dist = PVector.dist(foods.get(i).location, location);
+            if (dist < distMin) {
+                closestFood = foods.get(i);
+                distMin = dist;
+            }
+        }
+        return closestFood;
+    }
+
     //Apply a force:
     private void applyForce(PVector force) {
         PVector f = PVector.div(force, mass / 35);
@@ -185,7 +189,7 @@ class Bloop {
     Bloop reproduce(int id) {
         LOGGER.info("Reproduction!");
         DNA childDNA = dna.copy();
-        childDNA.mutate(0.02f); //2% mutation rate
+        childDNA.mutate();
         return new Bloop(neuralEvolution, childDNA, location, id);
     }
 
@@ -194,10 +198,11 @@ class Bloop {
         LOGGER.info("Bloops number: {}", id);
         LOGGER.info("Bloops mass: {}", mass);
         StringBuilder dnaStr = new StringBuilder("DNA: ");
-        for (int i = 0; i < dna.genes.length; ++i) {
-            dnaStr.append(dna.genes[i]).append(" ");
+        for (float gene : dna.genes) {
+            dnaStr.append(gene).append(" ");
         }
-        LOGGER.info(dnaStr.toString());
+        String dnaS = dnaStr.toString();
+        LOGGER.info(dnaS);
         LOGGER.info("Location: {} {}", location.x , location.y);
         LOGGER.info("Health: {}", health);
         LOGGER.info("\n");
@@ -205,6 +210,6 @@ class Bloop {
 
     //Check if a Bloops is Dead:
     boolean isDead() {
-        return health < 0.0f;
+        return health < 0;
     }
 }
