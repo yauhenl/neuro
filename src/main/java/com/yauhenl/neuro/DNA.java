@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yauhenl.neuro.NeuralEvolution.nextFloat;
+import static java.util.concurrent.ThreadLocalRandom.current;
+
 class DNA {
     private static final Logger LOGGER = LoggerFactory.getLogger(DNA.class);
     private static final String MUTATION = "Mutation!";
@@ -15,21 +18,16 @@ class DNA {
     List<Float> weightGenes = new ArrayList<>();
     Float massGene;
 
-    private NeuralEvolution neuralEvolution;
-
     //Construction, with random genes
-    DNA(NeuralEvolution neuralEvolution) {
-        this.neuralEvolution = neuralEvolution;
-
+    DNA() {
         for (int i = 0; i < 32; ++i) {  //Weights genes
-            weightGenes.add(i, neuralEvolution.random(-1, 1));
+            weightGenes.add(i, nextFloat(-1, 1));
         }
-        massGene = neuralEvolution.random(10, 70);
+        massGene = nextFloat(10, 70);
     }
 
     //Construction, with defined genes
-    private DNA(NeuralEvolution neuralEvolution, List<Float> weightGenes, Float massGene) {
-        this.neuralEvolution = neuralEvolution;
+    private DNA(List<Float> weightGenes, Float massGene) {
         this.weightGenes = weightGenes;
         this.massGene = massGene;
     }
@@ -38,21 +36,21 @@ class DNA {
     DNA copy() {
         Float newMassGene = massGene;
         List<Float> newWeightGenes = new ArrayList<>(weightGenes);
-        return new DNA(neuralEvolution, newWeightGenes, newMassGene);
+        return new DNA(newWeightGenes, newMassGene);
     }
 
     //Mutate the genes
     void mutate() {
         for (int i = 0; i < weightGenes.size(); i++) {
-            if (neuralEvolution.random(1) < MUTATION_RATE) {
+            if (current().nextFloat() < MUTATION_RATE) {
                 LOGGER.info(MUTATION);
-                weightGenes.set(i, neuralEvolution.random(0, 1));
-                massGene = neuralEvolution.random(10, 70);
+                weightGenes.set(i, nextFloat(0, 1));
+                massGene = nextFloat(10, 70);
             }
         }
-        if (neuralEvolution.random(1) < MUTATION_RATE) {
+        if (current().nextFloat() < MUTATION_RATE) {
             LOGGER.info(MUTATION);
-            massGene = neuralEvolution.random(10, 70);
+            massGene = nextFloat(10, 70);
         }
     }
 }

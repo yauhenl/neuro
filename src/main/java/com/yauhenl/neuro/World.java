@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+import static java.util.concurrent.ThreadLocalRandom.current;
+
 //The World class manage the entire world
 //it create Bloops and Foods and control them
 class World {
@@ -39,7 +41,7 @@ class World {
             bloops.get(i).display();  //Bloop display
 
 
-            if (bloops.get(i).health > 800 && neuralEvolution.random(1) < 0.0013f) {  //Bloop reproduction
+            if ((bloops.get(i).health > 800) && (current().nextFloat() < 0.0013f)) {  //Bloop reproduction
                 bloops.get(i).health -= 100;
                 bloops.add(bloops.get(i).reproduce(bloopsCount++));
             }
@@ -56,7 +58,7 @@ class World {
         }
 
         //Add some foods:
-        if (neuralEvolution.random(1) < 0.05f) {
+        if (current().nextFloat() < 0.05f) {
             foods.add(new Food(neuralEvolution));
         }
     }

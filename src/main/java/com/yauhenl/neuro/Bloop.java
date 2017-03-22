@@ -7,6 +7,8 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
+import static java.util.concurrent.ThreadLocalRandom.current;
+
 //The Bloop class
 class Bloop {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bloop.class);
@@ -35,13 +37,13 @@ class Bloop {
         this.neuralEvolution = neuralEvolution;
 
         this.id = id;
-        dna = new DNA(neuralEvolution);  //create random DNA
+        dna = new DNA();  //create random DNA
         brain = new Brain(dna);  //create the brain
 
         mass = dna.massGene;
         health = 1000;
 
-        location = new PVector(neuralEvolution.random(neuralEvolution.width), neuralEvolution.random(neuralEvolution.height));
+        location = new PVector(current().nextFloat() * neuralEvolution.width, current().nextFloat() * neuralEvolution.height);
         velocity = new PVector(0, 0);
         acceleration = new PVector(0.0f, 0.0f);
 

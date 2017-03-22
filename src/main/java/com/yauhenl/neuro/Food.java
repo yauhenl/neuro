@@ -2,6 +2,8 @@ package com.yauhenl.neuro;
 
 import processing.core.PVector;
 
+import static java.util.concurrent.ThreadLocalRandom.current;
+
 //The Food class
 class Food {
 
@@ -10,7 +12,7 @@ class Food {
 
     Food(NeuralEvolution neuralEvolution) {
         this.neuralEvolution = neuralEvolution;
-        location = new PVector(neuralEvolution.random(neuralEvolution.width), neuralEvolution.random(neuralEvolution.height));
+        location = new PVector(current().nextFloat() * neuralEvolution.width, current().nextFloat() * neuralEvolution.height);
     }
 
     void display() {
