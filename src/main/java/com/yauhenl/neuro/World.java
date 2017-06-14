@@ -1,65 +1,36 @@
 package com.yauhenl.neuro;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
+import java.util.List;
 
-import static java.util.concurrent.ThreadLocalRandom.current;
 
-//The World class manage the entire world
-//it create Bloops and Foods and control them
 class World {
-    private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
+    private final List<Bloop> bloops = new ArrayList<>();
+    private final List<Food> foods = new ArrayList<>();
 
-    private NeuralEvolution neuralEvolution;
-    private ArrayList<Bloop> bloops;
-    private ArrayList<Food> foods;
+    private Environment env;
 
-    private int bloopsCount = 0;
-
-    World(NeuralEvolution neuralEvolution, int bloopsNum, int foodsNum) {
-        this.neuralEvolution = neuralEvolution;
-        bloops = new ArrayList<>();
-        foods = new ArrayList<>();
-
-        for (int i = 0; i < bloopsNum; i++) {
-            bloops.add(new Bloop(neuralEvolution, bloopsCount++));
+    World(Environment environment, Integer bloopsCount, Integer foodCount) {
+        env = environment;
+        for (int i = 0; i < bloopsCount; i++) {
+            bloops.add(new Bloop(env, i));
         }
-        for (int i = 0; i < foodsNum; i++) {
-            foods.add(new Food(neuralEvolution));
+        for (int i = 0; i < foodCount; i++) {
+            foods.add(new Food(env));
         }
     }
 
-    void run() {
-
-        //Update bloops:
+    void draw() {
         for (int i = 0; i < bloops.size(); i++) {
-
-            bloops.get(i).update(foods);   //Update Bloop position
-            bloops.get(i).eat(foods);  //Bloop eating
-            bloops.get(i).display();  //Bloop display
-
-
-            if ((bloops.get(i).health > 800) && (current().nextFloat() < 0.0013f)) {  //Bloop reproduction
-                bloops.get(i).health -= 100;
-                bloops.add(bloops.get(i).reproduce(bloopsCount++));
-            }
-
-            if (bloops.get(i).isDead()) {  //Bloop death
-                LOGGER.info("Bloops {} is dead.", bloops.get(i).id);
-                bloops.remove(bloops.get(i));
+            Bloop it = bloops.get(i);
+            it.update(foods, bloops);
+            if (it.isDead()) {
+                bloops.remove(it);
             }
         }
-
-        //Display Foods:
-        for (Food food : foods) {
-            food.display();
-        }
-
-        //Add some foods:
-        if (current().nextFloat() < 0.05f) {
-            foods.add(new Food(neuralEvolution));
+        foods.forEach(Food::display);
+        if (env.random(1) < 0.05f) {
+            foods.add(new Food(env));
         }
     }
 }

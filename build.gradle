@@ -6,5 +6,4 @@ repositories {
 
 dependencies {
     compile 'org.processing:core:3.2.3'
-    compile 'ch.qos.logback:logback-classic:1.2.1'
 }
